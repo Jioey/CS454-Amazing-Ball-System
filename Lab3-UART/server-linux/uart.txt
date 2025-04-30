@@ -1,0 +1,39 @@
+	// ############################################################################
+
+	// 						UART Set Up Start (Rigs)
+
+	// ############################################################################ 
+
+	/* Stop UART port */
+	CLEARBIT(U1MODEbits.UARTEN); //Disable UART for configuration
+	/* Disable Interrupts */
+	IEC0bits.U1RXIE = 0;
+	IEC0bits.U1TXIE = 0;
+	/* Clear Interrupt flag bits */
+	IFS0bits.U1RXIF = 0;
+	IFS0bits.U1TXIF = 0;
+
+		/* Set IO pins */
+	TRISFbits.TRISF2 = 1; //set as input UART1 RX pin
+	TRISFbits.TRISF3 = 0; //set as output UART1 TX pin
+	/* baud rate */
+	// use the following equation to compute the proper
+	// setting for a specific baud rate
+	U1MODEbits.BRGH = 0; //Set low speed baud rate
+	U1BRG = (uint32_t)800000 / 9600 -1; //Set the baudrate to be at 9600
+	/* Operation settings and start port */
+	U1MODE = 0; // 8-bit, no parity and, 1 stop bit
+	U1MODEbits.RTSMD = 0; //select simplex mode
+	U1MODEbits.UEN = 0; //select simplex mode
+	U1MODE |= 0x00;
+	U1MODEbits.UARTEN = 1; //enable UART
+	U1STA = 0;
+	U1STAbits.UTXEN = 1; //enable UART TX
+
+
+
+	// ############################################################################
+	//																			//
+	// 						UART Set Up End										//
+	//																			//
+	// ############################################################################ 
